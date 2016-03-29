@@ -66,7 +66,7 @@ describe "PersistorManagerTests", ->
 	describe "test unspecified mixins", ->
 
 		it "should load s3 when no wrapper specified", (done) ->
-			@settings =
+			@settings = filestore: {}
 			@requires =
 				"./S3PersistorManager": @S3PersistorManager
 				"settings-sharelatex": @settings

@@ -16,14 +16,13 @@ Metrics.open_sockets.monitor(logger)
 Metrics.event_loop?.monitor(logger)
 Metrics.memory.monitor(logger)
 
-app.configure ->
-	app.use Metrics.http.monitor(logger)
+app.use Metrics.http.monitor(logger)
 	
-app.configure 'development', ->
+if (app.get 'env') == 'development'
 	console.log "Development Enviroment"
 	app.use express.errorHandler({ dumpExceptions: true, showStack: true })
 
-app.configure 'production', ->
+if (app.get 'env') == 'production'
 	console.log "Production Enviroment"
 	app.use express.errorHandler()
 
@@ -72,7 +71,7 @@ app.get  "/project/:project_id/file/:file_id", keyBuilder.userFileKey, fileContr
 app.post "/project/:project_id/file/:file_id", keyBuilder.userFileKey, fileController.insertFile
 
 app.put "/project/:project_id/file/:file_id", keyBuilder.userFileKey, express.bodyParser(), fileController.copyFile
-app.del "/project/:project_id/file/:file_id", keyBuilder.userFileKey, fileController.deleteFile
+app.delete "/project/:project_id/file/:file_id", keyBuilder.userFileKey, fileController.deleteFile
 
 app.get  "/template/:template_id/v/:version/:format", keyBuilder.templateFileKey, fileController.getFile
 app.get  "/template/:template_id/v/:version/:format/:sub_type", keyBuilder.templateFileKey, fileController.getFile
@@ -83,7 +82,7 @@ app.get  "/project/:project_id/public/:public_file_id", keyBuilder.publicFileKey
 app.post "/project/:project_id/public/:public_file_id", keyBuilder.publicFileKey, fileController.insertFile
 
 app.put "/project/:project_id/public/:public_file_id", keyBuilder.publicFileKey, express.bodyParser(), fileController.copyFile
-app.del "/project/:project_id/public/:public_file_id", keyBuilder.publicFileKey, fileController.deleteFile
+app.delete "/project/:project_id/public/:public_file_id", keyBuilder.publicFileKey, fileController.deleteFile
 
 app.get "/project/:project_id/size", keyBuilder.publicProjectKey, fileController.directorySize
 

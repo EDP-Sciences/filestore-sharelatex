@@ -60,7 +60,7 @@ describe "FileHandler", ->
 				@PersistorManager.sendStream.calledWith(@bucket, @key, @stream).should.equal true
 				done()
 
-		it "should delete the convetedKey folder", (done)->
+		it "should delete the convertedKey folder", (done)->
 			@keyBuilder.getConvertedFolderKey.returns(@stubbedConvetedKey)
 			@handler.insertFile @bucket, @key, @stream, =>
 				@PersistorManager.deleteDirectory.calledWith(@bucket, @stubbedConvetedKey).should.equal true
@@ -154,13 +154,13 @@ describe "FileHandler", ->
 			@stubbedStream = {"something":"here"}
 			@PersistorManager.sendFile = sinon.stub().callsArgWith(3)
 			@PersistorManager.getFileStream = sinon.stub().callsArgWith(3, null, @stubbedStream)
-			@convetedKey = @key+"converted"
+			@convertedKey = @key+"converted"
 			@handler._convertFile = sinon.stub().callsArgWith(3, null, @stubbedPath)
 			@ImageOptimiser.compressPng = sinon.stub().callsArgWith(1)
-			@handler._getConvertedFileAndCache @bucket, @key, @convetedKey, {}, (err, fsStream)=>
+			@handler._getConvertedFileAndCache @bucket, @key, @convertedKey, {}, (err, fsStream)=>
 				@handler._convertFile.called.should.equal true
-				@PersistorManager.sendFile.calledWith(@bucket, @convetedKey, @stubbedPath).should.equal true
-				@PersistorManager.getFileStream.calledWith(@bucket, @convetedKey).should.equal true
+				@PersistorManager.sendFile.calledWith(@bucket, @convertedKey, @stubbedPath).should.equal true
+				@PersistorManager.getFileStream.calledWith(@bucket, @convertedKey).should.equal true
 				@ImageOptimiser.compressPng.calledWith(@stubbedPath).should.equal true
 				fsStream.should.equal @stubbedStream
 				done()
